@@ -1,4 +1,8 @@
 # thunkify-object
+  [![NPM version][npm-version-image]][npm-url]
+  [![MIT License][license-image]][license-url]
+  [![Build Status][travis-image]][travis-url]
+  [![Test Coverage][coveralls-image]][coveralls-url]
 
   Wrap an object with callbacks functions into a wrapper with thunk returning functions,
   useful for generator-based flow control such as [co](https://github.com/visionmedia/co).
@@ -75,4 +79,16 @@ co(function* () {
 
 # License
 
-  MIT
+  Thunkify-object is freely distributable under the terms of the [MIT license](LICENSE).
+
+[license-image]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat
+[license-url]: LICENSE
+
+[npm-url]: https://npmjs.org/package/thunkify-object
+[npm-version-image]: http://img.shields.io/npm/v/thunkify-object.svg?style=flat
+
+[travis-url]: http://travis-ci.org/yvele/node-thunkify-object
+[travis-image]: http://img.shields.io/travis/yvele/node-thunkify-object.svg?style=flat
+
+[coveralls-url]: https://coveralls.io/r/yvele/node-thunkify-object
+[coveralls-image]: https://img.shields.io/coveralls/yvele/node-thunkify-object.svg?style=flat
