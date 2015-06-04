@@ -90,6 +90,83 @@ describe('WrapperBuilder', function() {
     });
   });
 
+
+
+  it('add() should work with options.sync', function(done) {
+
+    var DummyWrapper = new WrapperBuilder()
+      .add('doBiMode', {
+        sync: true
+      })
+      .getWrapper();
+
+    var dummy = new DummyWrapper(new Dummy());
+
+    // Sync mode
+    var syncRes = dummy.doBiModeSync('P');
+    assert.equal(syncRes, 'SYNC P');
+
+    // Async mode
+    dummy.doBiMode('P')(function(err, asyncRes) {
+      assert(!err);
+      assert.equal(asyncRes, 'ASYNC P');
+      done();
+    });
+  });
+
+
+  it('add() should work with options.sync and a transformation', function(done) {
+
+    var DummyWrapper = new WrapperBuilder()
+      .add('doBiMode', {
+        sync: {
+          transformation: function(res) {
+            return res + ' TRANSFORMED';
+          }
+        }
+      })
+      .getWrapper();
+
+    var dummy = new DummyWrapper(new Dummy());
+
+    // Sync mode
+    var syncRes = dummy.doBiModeSync('P');
+    assert.equal(syncRes, 'SYNC P TRANSFORMED');
+
+    // Async mode
+    dummy.doBiMode('P')(function(err, asyncRes) {
+      assert(!err);
+      assert.equal(asyncRes, 'ASYNC P');
+      done();
+    });
+  });
+
+
+  it('add() should work with options.sync and custom prototype format', function(done) {
+
+    var DummyWrapper = new WrapperBuilder()
+      .add('doBiMode', {
+        sync: {
+          prototypeNameFormat: '%sAnotherSuffix'
+        }
+      })
+      .getWrapper();
+
+    var dummy = new DummyWrapper(new Dummy());
+
+    // Sync mode
+    var syncRes = dummy.doBiModeAnotherSuffix('P');
+    assert.equal(syncRes, 'SYNC P');
+
+    // Async mode
+    dummy.doBiMode('P')(function(err, asyncRes) {
+      assert(!err);
+      assert.equal(asyncRes, 'ASYNC P');
+      done();
+    });
+  });
+
+
   it('addPassThrough() should work', function() {
 
     var DummyWrapper = new WrapperBuilder()

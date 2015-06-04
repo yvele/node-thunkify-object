@@ -29,16 +29,25 @@ Dummy.prototype.doWithParams = function(p1, p2, callback) {
   }, 1);
 }
 
-Dummy.prototype.doNoCallback = function(p1) {
-  var self = this;
-
-  return self._cp + ' ' + p1;
+Dummy.prototype.doNoCallback = function(p) {
+  return this._cp + ' ' + p;
 }
 
 Dummy.prototype.doNoCallbackNoParams = function() {
-  var self = this;
+  return this._cp;
+}
 
-  return self._cp;
+Dummy.prototype.doBiMode = function(p, callback) {
+
+  // Sync mode
+  if(!callback) {
+    return 'SYNC ' + p;
+  }
+
+  // Async mode
+  setTimeout(function() {
+    callback(null, 'ASYNC ' + p);
+  }, 1);
 }
 
 exports.Dummy = Dummy;
