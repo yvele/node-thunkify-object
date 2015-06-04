@@ -117,17 +117,23 @@ describe('WrapperBuilder', function() {
 
   it('add() should work with options.sync and a transformation', function(done) {
 
-    var DummyWrapper = new WrapperBuilder()
-      .add('doBiMode', {
-        sync: {
-          transformation: function(res) {
-            return res + ' TRANSFORMED';
-          }
-        }
-      })
-      .getWrapper();
-
+    var wb = new WrapperBuilder();
+    var DummyWrapper = wb.getWrapper();
     var dummy = new DummyWrapper(new Dummy());
+
+    wb.add('doBiMode', {
+      sync: {
+        transformation: function(res) {
+
+          assert.strictEqual(this, dummy,
+            'Transformation functions must be called'
+            + 'with the wrapper instance as a context (this)');
+
+          return res + ' TRANSFORMED';
+        }
+      }
+    });
+
 
     // Sync mode
     var syncRes = dummy.doBiModeSync('P');
@@ -193,6 +199,30 @@ describe('WrapperBuilder', function() {
 
     res = dummy.doNoCallbackNoParams();
     assert.equal(res, 'CP');
+  });
+
+
+  it('addPassThrough() should work with a transformation', function() {
+
+    var wb = new WrapperBuilder();
+    var DummyWrapper = wb.getWrapper();
+    var dummy = new DummyWrapper(new Dummy());
+
+    wb.addPassThrough('doNoCallback', {
+        transformation: function(res) {
+          
+          assert.strictEqual(this, dummy,
+            'Transformation functions must be called'
+            + 'with the wrapper instance as a context (this)');
+
+          return res + ' TRANSFORMED';
+        }
+      });
+
+    var dummy = new DummyWrapper(new Dummy('CP'));
+
+    var res = dummy.doNoCallback('P1');
+    assert.equal(res, 'CP P1 TRANSFORMED');
   });
 
 });
