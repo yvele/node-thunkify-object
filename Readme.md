@@ -132,10 +132,20 @@ co(function* () {
 });
 ```
 
+### Dealing with functions being both async and sync
+
+  TODO
+
 ## Running tests
 
 ```
 $ make test
+```
+
+With code coverage.
+
+```
+$ make test-cov
 ```
 
 ## License
