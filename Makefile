@@ -2,15 +2,21 @@ REQUIRED = --require should
 
 TESTS = test/wrapperBuilder/index.js
 
+BIN = iojs
+
+ifeq ($(findstring io.js, $(shell which node)),)
+	BIN = node
+endif
+
 test:
-	@NODE_ENV=test node \
+	@NODE_ENV=test $(BIN) \
 		./node_modules/.bin/mocha \
 		$(REQUIRED) \
 		$(TESTS) \
 		--bail
 
 test-cov:
-	@NODE_ENV=test node \
+	@NODE_ENV=test $(BIN) \
 		./node_modules/.bin/istanbul cover \
 		./node_modules/.bin/_mocha \
 		-- -u exports \
@@ -19,7 +25,7 @@ test-cov:
 		--bail
 
 test-travis:
-	@NODE_ENV=test node \
+	@NODE_ENV=test $(BIN) \
 		./node_modules/.bin/istanbul cover \
 		./node_modules/.bin/_mocha \
 		--report lcovonly \
