@@ -31,7 +31,7 @@ Dummy.prototype.helloYou = function(you, callback) {
 }
 ```
 
-  We first need to create the wrapper once for all future instances.
+  You first need to create the wrapper constructor once for all future instances.
 
 ```js
 var WrapperBuilder = require('thunkify-object').WrapperBuilder;
@@ -64,20 +64,81 @@ co(function* () {
   you can use `addPassThrough` to simply inherit the function in your wrapper.
   This is usefull for synchronous functions that doesn't use callback.
 
- ```js
- var WrapperBuilder = require('thunkify-object').WrapperBuilder;
+```js
+var WrapperBuilder = require('thunkify-object').WrapperBuilder;
 
- var DummyWrapper = new WrapperBuilder()
-   .add(['hello', 'helloYou'])
-   .addPassThrough('helloSync')
-   .getWrapper();
- ```
+var DummyWrapper = new WrapperBuilder()
+ .add(['hello', 'helloYou'])
+ .addPassThrough('helloSync')
+ .getWrapper();
+```
 
 ### Transformations
 
-  TODO
+  For complex objects, the `WrapperBuilder` can apply transformations to callback parameters.
 
-# License
+  Let's wrap the [MongoDB native driver](https://github.com/mongodb/node-mongodb-native) as an example.
+
+```js
+var WrapperBuilder = require('thunkify-object').WrapperBuilder;
+
+var Collection = new WrapperBuilder()
+ .add(['add', 'count', 'findOne'])
+ .getWrapper();
+
+var Db = new WrapperBuilder()
+  .add('collection', {
+    transformations: {
+      1: function(col) { return new Collection(col); }
+    }
+  })
+  .getWrapper();
+
+var MongoClient = new WrapperBuilder()
+  .add('connect', {
+    transformations: {
+      1: function(db) { return new Db(db); }
+    }
+  })
+  .getWrapper();
+```
+
+  Now that you have your wrappers, you can use them like that.
+
+```js
+var mongodb = require('mongodb');
+
+function* foo(url) {
+  var mongoClient = new MongoClient(mongodb.MongoClient);
+
+  // returned db is a wrapper
+  var db = yield mongoClient.connect(url);
+
+  // returned collection is a wrapper
+  var collection = yield db.collection('documents');
+
+  yield collection.add({ _id: 1, name: 'Paul Valery' });
+  return yield collection.findOne({ _id: 1 });
+}
+```
+  Let's use it with [co](https://github.com/visionmedia/co).
+
+```js
+var co = require('co');
+
+co(function* () {
+  var doc = yield foo('mongodb://localhost:27017/myproject');
+  console.log(doc);
+});
+```
+
+## Running tests
+
+```
+$ make test
+```
+
+## License
 
   Thunkify-object is freely distributable under the terms of the [MIT license](LICENSE).
 
