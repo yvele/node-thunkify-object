@@ -4,8 +4,7 @@
   [![Build Status][travis-image]][travis-url]
   [![Test Coverage][coveralls-image]][coveralls-url]
 
-  Wrap an object with callbacks functions into a wrapper with thunk returning functions,
-  useful for generator-based flow control such as [co](https://github.com/visionmedia/co).
+  Build full object wrappers that convert regular node methods into methods that return a thunk, useful for generator-based flow control such as [co](https://github.com/visionmedia/co).
 
 ## Installation
 
@@ -17,7 +16,7 @@ $ npm install thunkify-object --save
 
 ### Basic
 
-  Let's say you have a constructor with async functions that uses callbacks.
+  Let's say you have a constructor with async prototypes using callbacks.
 
 ```js
 function Dummy() {}
@@ -134,7 +133,40 @@ co(function* () {
 
 ### Dealing with functions being both async and sync
 
-  TODO
+  Sometimes functions have an optional callback parameter (like [this MongoDB driver method](http://mongodb.github.io/node-mongodb-native/2.0/api/Collection.html#aggregate)). That means when you call it with a callback it's async, but when you call it without a callback it's sync (potentially returning a value).
+
+  Here is how to wrap those functions.
+
+```js
+var WrapperBuilder = require('thunkify-object').WrapperBuilder;
+
+var Wrapper = new WrapperBuilder()
+ .add('helloWithOptionalCallback', {
+   sync: true
+ })
+ .getWrapper();
+```
+
+  Any wrapper instance will have 2 explicit methods:
+  * `helloWithOptionalCallback` which is async, returning a thunk
+  * `helloWithOptionalCallbackSync` which is sync (note the Sync suffix)
+
+The synchronous prototype can be customized with a specific name [format](https://nodejs.org/api/util.html#util_util_format_format) and a transformation.
+
+```js
+var WrapperBuilder = require('thunkify-object').WrapperBuilder;
+
+var Wrapper = new WrapperBuilder()
+ .add('helloWithOptionalCallback', {
+   sync: {
+     prototypeNameFormat: '%sCustomSuffix',
+     transformation: function(res) {
+       return res;
+     }
+   }
+ })
+ .getWrapper();
+```
 
 ## Running tests
 
