@@ -1,6 +1,6 @@
 REQUIRED = --require should
 
-TESTS = test/wrapperBuilder/index.js
+TESTS = test/index.js
 
 BIN = iojs
 

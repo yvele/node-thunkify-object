@@ -6,6 +6,18 @@
 
   Build full object wrappers that convert regular node methods into methods that return a thunk, useful for generator-based flow control such as [co](https://github.com/visionmedia/co).
 
+## Table of content
+
+- [Installation](#)
+- [Examples](#)
+ - [Basic](#)
+ - [Pass Through](#)
+ - [Transformations](#)
+ - [Dealing with functions being both async and sync](#)
+ - [Events](#)
+- [Running tests](#)
+- [License](#)
+
 ## Installation
 
 ```
@@ -165,6 +177,74 @@ var Wrapper = new WrapperBuilder()
      }
    }
  })
+ .getWrapper();
+```
+
+### Events
+
+```js
+var WrapperBuilder = require('thunkify-object').WrapperBuilder;
+
+var Wrapper = new WrapperBuilder()
+ .addEvent(['on', 'once'])
+ .addPassThrough('emit')
+ .getWrapper();
+```
+
+```js
+var EventEmitter = require('events').EventEmitter;
+var co = require('co');
+
+co(function* () {
+
+  var e = new Wrapper(new EventEmitter());
+
+  setTimeout(function() {
+    e.emit('finish', 'Finish data');
+  }, 200);
+
+
+  var res = yield e.on('finish');
+  console.log(res); // 'Finish data'
+});
+```
+
+Note that you can still pass a listener as a callback:
+
+```js
+var EventEmitter = require('events').EventEmitter;
+var co = require('co');
+
+co(function* () {
+
+  var e = new Wrapper(new EventEmitter());
+
+  setTimeout(function() {
+    e.emit('finish', 'Finish data');
+  }, 200);
+
+
+  e.on('finish', function(res) {
+    console.log(res); // 'Finish data'
+  });
+});
+```
+
+If you need transformations, you can define them for each event:
+
+```js
+var WrapperBuilder = require('thunkify-object').WrapperBuilder;
+
+var Wrapper = new WrapperBuilder()
+ .addEvent(['on', 'once'], {
+   events: {
+     'finish': transformations: {
+       0: function(arg) { return ... },
+       1: function(arg) { return ... }
+     }
+   }
+ })
+ .addPassThrough('emit')
  .getWrapper();
 ```
 
