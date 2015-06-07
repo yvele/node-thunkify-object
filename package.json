@@ -1,6 +1,6 @@
 {
   "name": "thunkify-object",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Build full object wrappers that convert regular node methods into methods that return a thunk",
   "main": "lib/index.js",
   "scripts": {
