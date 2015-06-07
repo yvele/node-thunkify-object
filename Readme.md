@@ -8,15 +8,15 @@
 
 ## Table of content
 
-- [Installation](#)
-- [Examples](#)
- - [Basic](#)
- - [Pass Through](#)
- - [Transformations](#)
- - [Dealing with functions being both async and sync](#)
- - [Events](#)
-- [Running tests](#)
-- [License](#)
+- [Installation](#installation)
+- [Examples](#examples)
+ - [Basic](#basic)
+ - [Pass Through](#pass-through)
+ - [Transformations](#transformations)
+ - [Dealing with methods being both async and sync](#Dealing-with-methods-being-both-async-and-sync)
+ - [Events](#events)
+- [Running tests](#running-tests)
+- [License](#license)
 
 ## Installation
 
@@ -143,7 +143,7 @@ co(function* () {
 });
 ```
 
-### Dealing with functions being both async and sync
+### Dealing with methods being both async and sync
 
   Sometimes functions have an optional callback parameter (like [this MongoDB driver method](http://mongodb.github.io/node-mongodb-native/2.0/api/Collection.html#aggregate)). That means when you call it with a callback it's async, but when you call it without a callback it's sync (potentially returning a value).
 
