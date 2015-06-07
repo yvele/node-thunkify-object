@@ -13,7 +13,7 @@
  - [Basic](#basic)
  - [Pass Through](#pass-through)
  - [Transformations](#transformations)
- - [Dealing with methods being both async and sync](#Dealing-with-methods-being-both-async-and-sync)
+ - [Dealing with methods being both async and sync](#dealing-with-methods-being-both-async-and-sync)
  - [Events](#events)
 - [Running tests](#running-tests)
 - [License](#license)
