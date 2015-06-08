@@ -18,7 +18,6 @@ function assertTransformationContext(context, wrapper) {
 
 describe('WrapperBuilder', function() {
 
-
   it('add() should work with no transformations', function(done) {
 
     var DummyWrapper = new WrapperBuilder()
@@ -258,45 +257,34 @@ describe('WrapperBuilder', function() {
 
   it('addEvent() should work with a callback (native mode)', function(done) {
 
-    var e = new EventEmitter();
-
     var DummyWrapper = new WrapperBuilder()
       .addEvent('on')
+      .addPassThrough('emit')
       .getWrapper();
 
-    var dummy = new DummyWrapper(e);
-
-    dummy.on('test', function() {
-      done();
-    });
-
-    e.emit('test');
+    var dummy = new DummyWrapper(new EventEmitter());
+    dummy.on('test', done);
+    dummy.emit('test');
   });
 
 
   it('addEvent() should work with an array of methods', function(done) {
 
-    var e = new EventEmitter();
-
     var DummyWrapper = new WrapperBuilder()
       .addEvent(['on', 'once'])
+      .addPassThrough('emit')
       .getWrapper();
 
-    var dummy = new DummyWrapper(e);
-
-    dummy.once('test', function() {
-      done();
-    });
-
-    e.emit('test');
+    var dummy = new DummyWrapper(new EventEmitter());
+    dummy.once('test', done);
+    dummy.emit('test');
   });
 
 
   it('addEvent() should work with a callback (native mode) and transformations', function(done) {
 
-    var e = new EventEmitter();
-
     var DummyWrapper = new WrapperBuilder()
+      .addPassThrough('emit')
       .addEvent('on', {
         events: {
           test: {
@@ -310,7 +298,7 @@ describe('WrapperBuilder', function() {
       })
       .getWrapper();
 
-    var dummy = new DummyWrapper(e);
+    var dummy = new DummyWrapper(new EventEmitter());
 
     dummy.on('test', function(p1, p2, p3) {
       assert.equal(p1, 'P1 TRANSFORMED1');
@@ -319,19 +307,18 @@ describe('WrapperBuilder', function() {
       done();
     });
 
-    e.emit('test', 'P1', 'P2', 'P3', 'P4');
+    dummy.emit('test', 'P1', 'P2', 'P3', 'P4');
   });
 
 
   it('addEvent() should work with no callback (thunk mode)', function(done) {
 
-    var e = new EventEmitter();
-
     var DummyWrapper = new WrapperBuilder()
       .addEvent('on')
+      .addPassThrough('emit')
       .getWrapper();
 
-    var dummy = new DummyWrapper(e);
+    var dummy = new DummyWrapper(new EventEmitter());
 
     dummy.on('test')(function(err, p) {
       assert(!err);
@@ -339,13 +326,11 @@ describe('WrapperBuilder', function() {
       done();
     });
 
-    e.emit('test', 'P');
+    dummy.emit('test', 'P');
   });
 
 
   it('addEvent() should work with no callback (thunk mode) and transformations', function(done) {
-
-    var e = new EventEmitter();
 
     var DummyWrapper = new WrapperBuilder()
       .addPassThrough('emit')
@@ -361,7 +346,7 @@ describe('WrapperBuilder', function() {
       })
       .getWrapper();
 
-    var dummy = new DummyWrapper(e);
+    var dummy = new DummyWrapper(new EventEmitter());
 
     dummy.on('test')(function(err, p1, p2, p3) {
       assert(!err);
