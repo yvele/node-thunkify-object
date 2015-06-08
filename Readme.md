@@ -1,19 +1,21 @@
 # thunkify-object
-  [![NPM version][npm-version-image]][npm-url]
-  [![MIT License][license-image]][license-url]
-  [![Build Status][travis-image]][travis-url]
-  [![Test Coverage][coveralls-image]][coveralls-url]
+[![NPM version][npm-version-image]][npm-url]
+[![MIT License][license-image]][license-url]
+[![Build Status][travis-image]][travis-url]
+[![Test Coverage][coveralls-image]][coveralls-url]
 
-  Build full object wrappers that convert regular node methods into methods that return a thunk, useful for generator-based flow control such as [co](https://github.com/visionmedia/co).
+Give callback libraries a sweet generator aftertaste :candy:
+
+Build full object wrappers that convert regular node methods into methods that return a thunk, useful for generator-based flow control such as [co](https://github.com/visionmedia/co).
 
 ## Table of content
 
 - [Installation](#installation)
 - [Examples](#examples)
- - [Basic](#basic)
- - [Pass Through](#pass-through)
- - [Transformations](#transformations)
- - [Dealing with methods being both async and sync](#dealing-with-methods-being-both-async-and-sync)
+  - [Basic](#basic)
+  - [Pass Through](#pass-through)
+  - [Transformations](#transformations)
+  - [Dealing with methods being both async and sync](#dealing-with-methods-being-both-async-and-sync)
  - [Events](#events)
 - [Running tests](#running-tests)
 - [License](#license)
@@ -28,7 +30,7 @@ $ npm install thunkify-object --save
 
 ### Basic
 
-  Let's say you have a constructor with async prototypes using callbacks.
+Let's say you have a constructor with async prototypes using callbacks.
 
 ```js
 function Dummy() {}
@@ -71,9 +73,9 @@ co(function* () {
 
 ### Pass Through
 
-  If you want some functions not to change their behavior,
-  you can use `addPassThrough` to simply inherit the function in your wrapper.
-  This is usefull for synchronous functions that doesn't use callback.
+If you want some functions not to change their behavior,
+you can use `addPassThrough` to simply inherit the function in your wrapper.
+This is useful for synchronous functions that doesn't use callback.
 
 ```js
 var WrapperBuilder = require('thunkify-object').WrapperBuilder;
@@ -86,9 +88,9 @@ var DummyWrapper = new WrapperBuilder()
 
 ### Transformations
 
-  For complex objects, the `WrapperBuilder` can apply transformations to callback parameters.
+For complex objects, the `WrapperBuilder` can apply transformations to callback parameters.
 
-  Let's wrap the [MongoDB native driver](https://github.com/mongodb/node-mongodb-native) as an example.
+Let's wrap the [MongoDB native driver](https://github.com/mongodb/node-mongodb-native) as an example.
 
 ```js
 var WrapperBuilder = require('thunkify-object').WrapperBuilder;
@@ -145,9 +147,9 @@ co(function* () {
 
 ### Dealing with methods being both async and sync
 
-  Sometimes functions have an optional callback parameter (like [this MongoDB driver method](http://mongodb.github.io/node-mongodb-native/2.0/api/Collection.html#aggregate)). That means when you call it with a callback it's async, but when you call it without a callback it's sync (potentially returning a value).
+Sometimes functions have an optional callback parameter (like [this MongoDB driver method](http://mongodb.github.io/node-mongodb-native/2.0/api/Collection.html#aggregate)). That means when you call it with a callback it's async, but when you call it without a callback it's sync (potentially returning a value).
 
-  Here is how to wrap those functions.
+Here is how to wrap those functions.
 
 ```js
 var WrapperBuilder = require('thunkify-object').WrapperBuilder;
@@ -262,7 +264,7 @@ $ make test-cov
 
 ## License
 
-  Thunkify-object is freely distributable under the terms of the [MIT license](LICENSE).
+Thunkify-object is freely distributable under the terms of the [MIT license](LICENSE).
 
 [license-image]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat
 [license-url]: LICENSE
