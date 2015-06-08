@@ -5,6 +5,17 @@ var WrapperBuilder = require('../../lib').WrapperBuilder;
 var Dummy = require('./Dummy').Dummy;
 
 
+/**
+ * @param {Object} context The Transformation function context (this).
+ * @param {Object!} wrapper The wrapper instance to be compared with.
+ */
+function assertTransformationContext(context, wrapper) {
+  assert.strictEqual(context, wrapper,
+    'Transformation functions must be called'
+    + ' with the wrapper instance as a context (this).');
+};
+
+
 describe('WrapperBuilder', function() {
 
 
@@ -53,21 +64,14 @@ describe('WrapperBuilder', function() {
 
     var dummy = new DummyWrapper(new Dummy('CP'));
 
-
     wb.add('doNoParams', {
         transformations: {
           1: function(res) {
-
-            assert.strictEqual(this, dummy,
-              'Transformation functions must be called'
-              + 'with the wrapper instance as a context (this)');
-
+            assertTransformationContext(this, dummy);
             return res + ' TRANS';
           }
         }
       });
-
-
 
     dummy.doNoParams()(function(err, res) {
       assert(!err);
@@ -75,6 +79,39 @@ describe('WrapperBuilder', function() {
       done();
     });
   });
+
+
+  it('add() should work with a post transformation (transformations.post)', function(done) {
+
+    var Dummy = function() {};
+    Dummy.prototype.do = function(callback) {
+      // Only one param, err is voluntarily omitted.
+      callback('RES');
+    };
+
+    var wb = new WrapperBuilder();
+    var DummyWrapper = wb.getWrapper();
+
+    var dummy = new DummyWrapper(new Dummy('CP'));
+
+    wb.add('do', {
+        transformations: {
+          post: function(args) {
+            assertTransformationContext(this, dummy);
+
+            args.unshift(null);
+            return args;
+          }
+        }
+      });
+
+    dummy.do()(function(err, res) {
+      assert(!err);
+      assert.equal(res, 'RES');
+      done();
+    });
+  });
+
 
   it('add() should work with multiple results', function(done) {
 
@@ -125,11 +162,7 @@ describe('WrapperBuilder', function() {
     wb.add('doBiMode', {
       sync: {
         transformation: function(res) {
-
-          assert.strictEqual(this, dummy,
-            'Transformation functions must be called'
-            + 'with the wrapper instance as a context (this)');
-
+          assertTransformationContext(this, dummy);
           return res + ' TRANSFORMED';
         }
       }
@@ -211,11 +244,7 @@ describe('WrapperBuilder', function() {
 
     wb.addPassThrough('doNoCallback', {
         transformation: function(res) {
-
-          assert.strictEqual(this, dummy,
-            'Transformation functions must be called'
-            + 'with the wrapper instance as a context (this)');
-
+          assertTransformationContext(this, dummy);
           return res + ' TRANSFORMED';
         }
       });
@@ -273,7 +302,8 @@ describe('WrapperBuilder', function() {
           test: {
             transformations: {
               0: function(p) { return p + ' TRANSFORMED1' },
-              1: function(p) { return p + ' TRANSFORMED2' }
+              1: function(p) { return p + ' TRANSFORMED2' },
+              post: function(args) { args.push('P4'); return args; }
             }
           }
         }
@@ -289,7 +319,7 @@ describe('WrapperBuilder', function() {
       done();
     });
 
-    e.emit('test', 'P1', 'P2', 'P3');
+    e.emit('test', 'P1', 'P2', 'P3', 'P4');
   });
 
 
