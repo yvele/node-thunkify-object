@@ -145,7 +145,7 @@ co(function* () {
 });
 ```
 
-You can find a complete MongoDB native driver implementation here.
+You can find a complete MongoDB native driver wrapper [here](https://github.com/yvele/node-thunkify-mongodb).
 
 ### Dealing with methods being both async and sync
 
