@@ -145,6 +145,8 @@ co(function* () {
 });
 ```
 
+You can find a complete MongoDB native driver implementation here.
+
 ### Dealing with methods being both async and sync
 
 Sometimes functions have an optional callback parameter (like [this MongoDB driver method](http://mongodb.github.io/node-mongodb-native/2.0/api/Collection.html#aggregate)). That means when you call it with a callback it's async, but when you call it without a callback it's sync (potentially returning a value).
