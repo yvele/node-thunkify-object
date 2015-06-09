@@ -1,24 +1,15 @@
-# thunkify-object
 [![NPM version][npm-version-image]][npm-url]
 [![MIT License][license-image]][license-url]
 [![Build Status][travis-image]][travis-url]
 [![Test Coverage][coveralls-image]][coveralls-url]
 
+# thunkify-object
+
+[Installation](#installation) | [Examples](#examples) | [Running tests](#running-tests) | [License](#license)
+
 Give callback libraries a sweet generator aftertaste :cake:
 
 Build full object wrappers that convert regular node methods into methods that return a thunk, useful for generator-based flow control such as [co](https://github.com/visionmedia/co), [Koa](http://koajs.com/), etc.
-
-## Table of content
-
-- [Installation](#installation)
-- [Examples](#examples)
-  - [Basic](#basic)
-  - [Pass Through](#pass-through)
-  - [Transformations](#transformations)
-  - [Dealing with methods being both async and sync](#dealing-with-methods-being-both-async-and-sync)
- - [Events](#events)
-- [Running tests](#running-tests)
-- [License](#license)
 
 ## Installation
 
@@ -27,6 +18,8 @@ $ npm install thunkify-object --save
 ```
 
 ## Examples
+
+[Basic](#basic) | [Pass Through](#pass-through) | [Transformations](#transformations) | [Dealing with methods being both async and sync](#dealing-with-methods-being-both-async-and-sync) | [Events](#events)
 
 ### Basic
 
