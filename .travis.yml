@@ -3,5 +3,7 @@ node_js:
   - "0.12"
   - "iojs"
 sudo: false
-script: "make test-travis"
+script:
+  - "make test-travis"
+  - "make lint"
 after_script: "npm install coveralls@2 && cat ./coverage/lcov.info | coveralls"
