@@ -4,7 +4,8 @@
   "description": "Build full object wrappers that convert regular node methods into methods that return a thunk",
   "main": "lib/index.js",
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "lint": "make lint"
   },
   "repository": "yvele/node-thunkify-object",
   "keywords": [
@@ -24,6 +25,7 @@
 
   },
   "devDependencies": {
+    "eslint": "*",
     "mocha": "*",
     "should": "*",
     "istanbul": "*"
