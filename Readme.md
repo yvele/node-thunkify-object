@@ -26,13 +26,13 @@ $ npm install thunkify-object --save
 Let's say you have a constructor with async prototypes using callbacks.
 
 ```js
-function Dummy() {}
+function Dummy () {}
 
-Dummy.prototype.hello = function(callback) {
+Dummy.prototype.hello = function (callback) {
   setImmediate(callback, null, 'Hello');
 }
 
-Dummy.prototype.helloYou = function(you, callback) {
+Dummy.prototype.helloYou = function (you, callback) {
   setImmediate(callback, null, 'Hello ' + you);
 }
 ```
@@ -95,7 +95,7 @@ var Collection = new WrapperBuilder()
 var Db = new WrapperBuilder()
   .add('collection', {
     transformations: {
-      1: function(col) { return new Collection(col); }
+      1: function (col) { return new Collection(col); }
     }
   })
   .getWrapper();
@@ -103,7 +103,7 @@ var Db = new WrapperBuilder()
 var MongoClient = new WrapperBuilder()
   .add('connect', {
     transformations: {
-      1: function(db) { return new Db(db); }
+      1: function (db) { return new Db(db); }
     }
   })
   .getWrapper();
@@ -169,7 +169,7 @@ var Wrapper = new WrapperBuilder()
  .add('helloWithOptionalCallback', {
    sync: {
      prototypeNameFormat: '%sCustomSuffix',
-     transformation: function(res) {
+     transformation: function (res) {
        return res;
      }
    }
@@ -196,7 +196,7 @@ co(function* () {
 
   var e = new Wrapper(new EventEmitter());
 
-  setTimeout(function() {
+  setTimeout(function () {
     e.emit('finish', 'Finish data');
   }, 200);
 
@@ -216,12 +216,12 @@ co(function* () {
 
   var e = new Wrapper(new EventEmitter());
 
-  setTimeout(function() {
+  setTimeout(function () {
     e.emit('finish', 'Finish data');
   }, 200);
 
 
-  e.on('finish', function(res) {
+  e.on('finish', function (res) {
     console.log(res); // 'Finish data'
   });
 });
@@ -236,8 +236,8 @@ var Wrapper = new WrapperBuilder()
  .addEvent(['on', 'once'], {
    events: {
      'finish': transformations: {
-       0: function(arg) { return ... },
-       1: function(arg) { return ... }
+       0: function (arg) { return ... },
+       1: function (arg) { return ... }
      }
    }
  })
