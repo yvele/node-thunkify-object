@@ -1,7 +1,6 @@
 REQUIRED = --require should
 
 TESTS = test/index.js
-LINTS = lib
 
 BIN = iojs
 
@@ -38,6 +37,6 @@ test-travis:
 lint:
 	@NODE_ENV=test $(BIN) \
 		./node_modules/.bin/eslint \
-		$(LINTS)
+		lib
 
 .PHONY: test
