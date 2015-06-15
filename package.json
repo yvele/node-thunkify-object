@@ -21,6 +21,11 @@
   ],
   "license": "MIT",
   "author": "Yves Merlicco",
+  "files": [
+    "lib/",
+    "LICENSE",
+    "Readme.md"
+  ],
   "dependencies": {
 
   },
@@ -29,5 +34,9 @@
     "mocha": "*",
     "should": "*",
     "istanbul": "*"
+  },
+  "engines": {
+    "node" : ">=0.12.0",
+    "iojs" : ">=2.0.0"
   }
 }
