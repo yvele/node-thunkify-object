@@ -4,6 +4,8 @@
   "description": "Build full object wrappers that convert regular node methods into methods that return a thunk",
   "main": "lib/index.js",
   "scripts": {
+    "setup": "./script/setup.sh",
+    "clean": "./script/clean.sh",
     "test": "make test",
     "lint": "make lint"
   },
@@ -22,9 +24,9 @@
   "license": "MIT",
   "author": "Yves Merlicco",
   "files": [
-    "lib/",
+    "Readme.md",
     "LICENSE",
-    "Readme.md"
+    "lib/"
   ],
   "dependencies": {
 
